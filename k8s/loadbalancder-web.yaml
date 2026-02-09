@@ -37,9 +37,9 @@ metadata:
     alb.ingress.kubernetes.io/security-groups: sg-07fd644801c77ba9f, sg-04becb42b85abaaa1
 
     # 헬스체크 설정
-    #alb.ingress.kubernetes.io/healthcheck-path: /
-    #alb.ingress.kubernetes.io/healthcheck-port: traffic-port
-    #alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
+    alb.ingress.kubernetes.io/healthcheck-path: /
+    alb.ingress.kubernetes.io/healthcheck-port: traffic-port
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
 
     # 기타 속성 (ALB 전용 표기법)
     alb.ingress.kubernetes.io/load-balancer-attributes: idle_timeout.timeout_seconds=60
