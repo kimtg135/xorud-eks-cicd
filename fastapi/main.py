@@ -88,8 +88,8 @@ async def read_root():
             <h1>FastAPI Server</h1>
 
             <p>
-                현재 Python <span class="code-box">FastAPI</span> 백엔드 서버에<br>
-                직접 접속하셨습니다.
+                현재 Python <span class="code-box">FastAPI</span> FastAPI에<br>
+                접속하셨습니다.
             </p>
 
 
