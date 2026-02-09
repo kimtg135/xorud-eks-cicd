@@ -11,7 +11,7 @@ async def read_root():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FastAPI Backend</title>
+        <title>ArgoCD FastAPI TEST</title>
         <style>
             :root {
                 /* FastAPI의 상징적인 틸(Teal) 컬러 사용 */
@@ -85,7 +85,7 @@ async def read_root():
         <div class="container">
             <div class="logo-text">⚡</div>
 
-            <h1>FastAPI Server</h1>
+            <h1>FastAPI TEST입니다.</h1>
 
             <p>
                 현재 Python <span class="code-box">FastAPI</span> FastAPI에<br>
