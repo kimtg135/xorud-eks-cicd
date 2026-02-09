@@ -57,13 +57,13 @@ spec:
                 name: web-project-svc # 서비스 이름과 일치해야 함
                 port:
                   number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: web-project-svc
-                port:
-                  number: 8000 # FastAPI로 연결
+                    # - path: /api
+                    # pathType: Prefix
+                    # backend:
+                    # service:
+                    # name: web-project-svc
+                    # port:
+                    # number: 8000 # FastAPI로 연결
 ---
 # ---------------------------------------------------------
 # 2. Deployment: 애플리케이션(Nginx) 컨테이너 실행 정의
