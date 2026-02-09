@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx + FastAPI Service</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 2.5rem 3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        /* --- [추가된 부분: 로고 스타일] --- */
+        .logo-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem auto;
+            
+            /* 요청하신 CSS 방식 적용 */
+            background-image: url('images/nginx.png');
+            background-size: contain; /* 이미지가 박스 안에 꽉 차게 */
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        .status-card {
+            background-color: #e9f5ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+            text-align: left;
+        }
+        .status-card.success { background-color: #d4edda; border-color: var(--success-color); }
+        .status-card.error { background-color: #f8d7da; border-color: var(--error-color); }
+        
+        .status-header { font-weight: bold; margin-bottom: 0.5rem; display: block; }
+        .status-message { font-size: 0.9rem; word-break: break-all; }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="logo-box"></div>
+
+        <h1>서비스 연결 성공!!</h1>
+        <p class="subtitle">EC2 인스턴스로 Nginx Test중 입니다!!</p>
+
+        <div class="status-card" id="api-status-box">
+            <span class="status-header" id="status-title">📡 백엔드 연결 대기 중...</span>
+            <span class="status-message" id="status-text">아래 버튼을 눌러 FastAPI 서버와 통신을 확인하세요.</span>
+        </div>
+
+        <button id="check-api-btn">FastAPI 연결 테스트 시작</button>
+    </div>
+
+    <script>
+        const statusBox = document.getElementById('api-status-box');
+        const statusTitle = document.getElementById('status-title');
+        const statusText = document.getElementById('status-text');
+        const checkBtn = document.getElementById('check-api-btn');
+
+        checkBtn.addEventListener('click', async () => {
+            checkBtn.disabled = true;
+            checkBtn.textContent = '연결 시도 중... ⏳';
+            updateStatus('waiting', '통신 중...', 'FastAPI 서버에 신호를 보내는 중입니다.');
+
+            try {
+                // Nginx의 proxy_pass 설정에 따라 /api/ 경로 호출
+                const response = await fetch('/api/'); 
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStatus('success', '✅ 연결 성공!', `FastAPI 응답: "${data.message || JSON.stringify(data)}"`);
+                } else {
+                    throw new Error(`서버 오류 (${response.status})`);
+                }
+            } catch (error) {
+                console.error('API Error:', error);
+                updateStatus('error', '❌ 연결 실패', 'FastAPI 서버 응답 없음 (Nginx Proxy 설정을 확인하세요)');
+            } finally {
+                checkBtn.disabled = false;
+                checkBtn.textContent = 'FastAPI 연결 테스트 재시도';
+            }
+        });
+
+        function updateStatus(type, title, message) {
+            statusBox.className = `status-card ${type}`;
+            statusTitle.textContent = title;
+            statusText.textContent = message;
+        }
+    </script>
+</body>
+</html>
