@@ -1,1 +1,1 @@
-# xorud-eks-cdcd
+# xorud-eks-cicd
